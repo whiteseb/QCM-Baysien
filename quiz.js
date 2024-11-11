@@ -43,10 +43,21 @@ function displayQuestions(questions) {
         questionElement.appendChild(questionText);
 
         // Mélanger les options
-        const options = [question.Reponse1, question.Reponse2, question.Reponse3, question.Reponse4, question.Reponse5];
-        shuffle(options);
+        const options = [
+            question.Reponse1,
+            question.Reponse2,
+            question.Reponse3,
+            question.Reponse4,
+            question.Reponse5
+        ];
 
-        options.forEach((option, idx) => {
+        // Filtrer les options vides ou undefined
+        const filteredOptions = options.filter(option => option && option !== "undefined");
+
+        // Mélanger les options filtrées
+        shuffle(filteredOptions);
+
+        filteredOptions.forEach((option, idx) => {
             const optionElement = document.createElement('label');
             optionElement.innerHTML = `<input type="radio" name="question-${index}" value="${option}">${option}`;
             questionElement.appendChild(optionElement);
@@ -86,3 +97,5 @@ function submitQuiz(questions) {
 
 // Charger le CSV au démarrage
 window.onload = loadCSV;
+
+
