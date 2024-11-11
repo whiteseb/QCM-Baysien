@@ -1,8 +1,8 @@
-// Fonction pour charger et parser le fichier CSV depuis GitHub
+// Fonction pour charger et parser le fichier CSV depuis Google Sheets
 function loadCSV() {
-    const url = 'https://github.com/whiteseb/QCM-Baysien/raw/master/CSV_questions.csv'; // Remplacer par ton lien raw
+    const csvURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQE5hXX56g9pN-vusClQrFtV-_iPVtSDak1po5mfigJ0iAzMaNn3aPBG57_UH0LiCnUZJDcT55HgyjL/pub?output=csv'; // URL du CSV Google Sheets
 
-    fetch(url)
+    fetch(csvURL)  // Pas besoin de proxy CORS ici
         .then(response => response.text()) // Récupère le contenu en texte brut
         .then(data => {
             parseCSV(data); // On passe les données récupérées à la fonction de parsing
@@ -77,6 +77,9 @@ function submitQuiz(questions) {
 
     alert(`Ton score est : ${score}`);
 }
+
+// Charger le CSV au démarrage
+window.onload = loadCSV;
 
 // Charger le CSV au démarrage
 window.onload = loadCSV;
