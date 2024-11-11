@@ -1,6 +1,6 @@
 // Fonction pour charger et parser le fichier CSV depuis GitHub
 function loadCSV() {
-    const url = 'https://github.com/whiteseb/QCM-Baysien/raw/main/CSV_questions.csv'; // Remplacer par ton lien raw
+    const url = 'https://github.com/whiteseb/QCM-Baysien/raw/master/CSV_questions.csv'; // Remplacer par ton lien raw
 
     fetch(url)
         .then(response => response.text()) // Récupère le contenu en texte brut
