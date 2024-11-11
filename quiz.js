@@ -19,6 +19,9 @@ function parseCSV(data) {
         skipEmptyLines: true
     });
 
+    // Afficher les données du CSV dans la console pour vérifier qu'elles sont bien récupérées
+    console.log('Données du CSV:', questions.data); // Ajoute cette ligne pour vérifier le contenu du CSV
+
     displayQuestions(questions.data);
 }
 
@@ -28,6 +31,9 @@ function displayQuestions(questions) {
     quizContainer.innerHTML = ''; // Vide le contenu précédent
 
     questions.forEach((question, index) => {
+        // Vérifie si la question et ses réponses sont valides
+        console.log(`Question ${index + 1}:`, question);
+
         const questionElement = document.createElement('div');
         questionElement.classList.add('question');
         
