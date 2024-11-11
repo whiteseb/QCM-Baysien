@@ -80,6 +80,3 @@ function submitQuiz(questions) {
 
 // Charger le CSV au démarrage
 window.onload = loadCSV;
-
-// Charger le CSV au démarrage
-window.onload = loadCSV;
