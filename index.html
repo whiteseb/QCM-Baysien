@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QCM avec Réponses Aléatoires</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Web</title>
+    <link rel="stylesheet" href="style.css"> <!-- Si tu as un fichier style.css -->
 </head>
 <body>
-  <h1>Quiz</h1>
-  <div id="question-container">
-    <!-- Les questions seront chargées ici dynamiquement -->
-  </div>
-  <button id="submit-button">Soumettre</button>
-  <div id="result"></div>
+    <h1>Bienvenue dans le Quiz !</h1>
+    <div id="quiz-container"></div> <!-- Les questions seront affichées ici -->
+    <button id="submit-btn">Soumettre</button>
 
-  <script src="quiz.js"></script>
+    <!-- Inclure PapaParse depuis un CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <!-- Inclure ton fichier JavaScript -->
+    <script src="quiz.js"></script>
 </body>
 </html>
