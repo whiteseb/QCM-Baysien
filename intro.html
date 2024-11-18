@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction au Questionnaire</title>
+    <link rel="stylesheet" href="style.css"> <!-- Lien vers le fichier CSS pour appliquer le style -->
+</head>
+<body>
+    <div id="intro-container">
+        <h1>Bienvenue sur le questionnaire</h1>
+        <p>Ce questionnaire a deux objectifs.</p> 
+        <p>Il a pour but d'évaluer un nouveau type de bareme pour répondre à des QCM. Il s'agit, plutot que de se prononcer necessairement sur une seule réponse à un QCU, de donner pour chaque proposition ce que l'on estime etre la probabilité que ce soit la bonne réponse. Chaque question sera donc posée deux fois, en QCU classique et en QCU dit "baysien", de façon aléatoire.</p> 
+        <p>Et comme vous etes en stage de péiatrie avec de la maternité, on va en profiter pour voir vos connaissances sur ces sujets. </p>
+        <p>Un deuxieme questionnaire vous sera proposé en fin de stage, pour voir l'évolution (Est-ce qu'on vous a bien fait progresser ? Est-ce que le fait de refaire un QCM baysien modifie la facon d'y répondre ?).</p>
+        <p>Afin d'avoir un controle, des questions de culture G seront glissées dans le questionnaire. (Parce que a-priori, votre stage chez nous ne devrait vous rendre beaucoup plus performant en culture G. Quoique... on verra bien !)  
+      <p>Bien entendu, vos réponses seront anonymes. Vous donnerez un alias simple, qui devra etre le même pour le deuxieme questionnaire (evitez un alias trop commun qui pourrait etre aussi choisi par quelqu'un d'autre svp !).</p>
+
+      
+        <p>Avant de commencer, merci de remplir les informations suivantes :</p>
+
+        <!-- Formulaire pour collecter les informations personnelles -->
+        <form id="intro-form">
+            <label for="alias">Surnom / Alias :</label>
+            <input type="text" id="alias" name="alias" required><br><br>
+
+            <label for="age">Âge :</label>
+            <input type="number" id="age" name="age" required><br><br>
+
+            <label for="sexe">Sexe :</label>
+            <select id="sexe" name="sexe" required>
+                <option value="homme">Homme</option>
+                <option value="femme">Femme</option>
+                <option value="autre">Autre</option>
+            </select><br><br>
+
+            <label for="region">Région de l'internat :</label>
+            <input type="text" id="region" name="region" required><br><br>
+
+            <label for="semestre">Semestre actuel :</label>
+            <input type="number" id="semestre" name="semestre" required><br><br>
+
+            <label for="pediatrie_stage">Avez-vous déjà fait de la pédiatrie en stage ?</label>
+            <input type="checkbox" id="pediatrie_stage" name="pediatrie_stage"><br><br>
+
+            <label for="maternite_stage">Avez-vous déjà fait de la maternité en stage ?</label>
+            <input type="checkbox" id="maternite_stage" name="maternite_stage"><br><br>
+
+            <label for="pediatrie_rempla">Avez-vous déjà fait de la pédiatrie en rempla ?</label>
+            <input type="checkbox" id="pediatrie_rempla" name="pediatrie_rempla"><br><br>
+
+            <label for="maternite_rempla">Avez-vous déjà fait de la maternité en rempla ?</label>
+            <input type="checkbox" id="maternite_rempla" name="maternite_rempla"><br><br>
+
+            <label for="desar_pediatrie">Avez-vous déjà suivi les cours du DESAR de pédiatrie ?</label>
+            <input type="checkbox" id="desar_pediatrie" name="desar_pediatrie"><br><br>
+
+            <label for="desar_maternite">Avez-vous déjà suivi les cours du DESAR de maternité ?</label>
+            <input type="checkbox" id="desar_maternite" name="desar_maternite"><br><br>
+
+            <label for="oral_pediatrie">Avez-vous déjà passé l'oral de pédiatrie ?</label>
+            <input type="checkbox" id="oral_pediatrie" name="oral_pediatrie"><br><br>
+
+            <label for="oral_maternite">Avez-vous déjà passé l'oral de maternité ?</label>
+            <input type="checkbox" id="oral_maternite" name="oral_maternite"><br><br>
+
+
+            <p>Avant d'entrer dans le vif du sujet, on vous propose quelques questions d'entrainement, pour vous familiariser rapidement avec le format</p>
+            <!-- Bouton pour démarrer le questionnaire -->
+            <button type="button" id="start-btn">Commencer le questionnaire d'entrainement</button>
+        </form>
+    </div>
+
+    <script src="intro.js"></script> <!-- Lien vers un fichier JavaScript qui gère la logique de la page d'introduction -->
+</body>
+</html>
