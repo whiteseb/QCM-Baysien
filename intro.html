@@ -41,33 +41,74 @@
             <input type="number" id="semestre" name="semestre" min="1" required><br><br>
 
             <label for="pediatrie_stage">Avez-vous déjà fait de la pédiatrie en stage ?</label>
-            <input type="checkbox" id="pediatrie_stage" name="pediatrie_stage"><br><br>
+                <input type="radio" id="pediatrieStageOui" name="pediatrieStage" value="oui" required>
+                <label for="pediatrieStageOui">Oui</label>
+
+                <input type="radio" id="pediatrieStageNon" name="pediatrieStage" value="non">
+                <label for="pediatrieStageNon">Non</label><br><br>
 
             <label for="maternite_stage">Avez-vous déjà fait de la maternité en stage ?</label>
-            <input type="checkbox" id="maternite_stage" name="maternite_stage"><br><br>
+            
+                <input type="radio" id="maternite_stageOui" name="maternite_stage" value="oui" required>
+                <label for="maternite_stageOui">Oui</label>
 
+                <input type="radio" id="maternite_stageNon" name="maternite_stage" value="non">
+                <label for="maternite_stageNon">Non</label><br><br>
+
+            
             <label for="pediatrie_rempla">Avez-vous déjà fait de la pédiatrie en rempla ?</label>
-            <input type="checkbox" id="pediatrie_rempla" name="pediatrie_rempla"><br><br>
 
+                 <input type="radio" id="pediatrie_remplaOui" name="pediatrie_rempla" value="oui" required>
+                 <label for="pediatrie_remplaOui">Oui</label>
+
+                 <input type="radio" id="pediatrie_remplaNon" name="pediatrie_rempla" value="non">
+                 <label for="pediatrie_remplaNon">Non</label><br><br>
+
+            
             <label for="maternite_rempla">Avez-vous déjà fait de la maternité en rempla ?</label>
-            <input type="checkbox" id="maternite_rempla" name="maternite_rempla"><br><br>
+        
+                <input type="radio" id="maternite_remplaOui" name="maternite_rempla" value="oui" required>
+                <label for="maternite_remplaOui">Oui</label>
 
+                <input type="radio" id="maternite_remplaNon" name="maternite_rempla" value="non">
+                <label for="maternite_remplaNon">Non</label><br><br>
+            
             <label for="desar_pediatrie">Avez-vous déjà suivi les cours du DESAR de pédiatrie ?</label>
-            <input type="checkbox" id="desar_pediatrie" name="desar_pediatrie"><br><br>
 
+                <input type="radio" id="desar_pediatrieOui" name="desar_pediatrie" value="oui" required>
+                <label for="desar_pediatrieOui">Oui</label>
+
+                <input type="radio" id="desar_pediatrieNon" name="desar_pediatrie" value="non">
+                <label for="desar_pediatrieNon">Non</label><br><br>
+            
             <label for="desar_maternite">Avez-vous déjà suivi les cours du DESAR de maternité ?</label>
-            <input type="checkbox" id="desar_maternite" name="desar_maternite"><br><br>
 
+                <input type="radio" id="desar_materniteOui" name="desar_maternite" value="oui" required>
+                <label for="desar_materniteOui">Oui</label>
+
+                <input type="radio" id="desar_materniteNon" name="desar_maternite" value="non">
+                <label for="desar_materniteNon">Non</label><br><br>
+            
             <label for="oral_pediatrie">Avez-vous déjà passé l'oral de pédiatrie ?</label>
-            <input type="checkbox" id="oral_pediatrie" name="oral_pediatrie"><br><br>
+
+                <input type="radio" id="oral_pediatrieOui" name="oral_pediatrie" value="oui" required>
+                <label for="oral_pediatrieOui">Oui</label>
+
+                <input type="radio" id="oral_pediatrieNon" name="oral_pediatrie" value="non">
+                <label for="oral_pediatrieNon">Non</label><br><br>
 
             <label for="oral_maternite">Avez-vous déjà passé l'oral de maternité ?</label>
             <input type="checkbox" id="oral_maternite" name="oral_maternite"><br><br>
 
+                <input type="radio" id="oral_materniteOui" name="oral_maternite" value="oui" required>
+                <label for="oral_materniteOui">Oui</label>
+
+                <input type="radio" id="oral_materniteNon" name="oral_maternite" value="non">
+                <label for="oral_materniteNon">Non</label><br><br>
 
             <p>Avant d'entrer dans le vif du sujet, on vous propose quelques questions d'entrainement, pour vous familiariser rapidement avec le format</p>
             <!-- Bouton pour démarrer le questionnaire -->
-            <button type="button" id="start-btn">Commencer le questionnaire d'entrainement</button>
+            <button onclick="window.location.href='mini-questionnaire.html'">Commencer le questionnaire d'entrainement</button>
         </form>
     </div>
 
