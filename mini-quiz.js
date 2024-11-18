@@ -17,8 +17,37 @@ const questions = [
         question: "Quel est le plus grand océan du monde ?",
         options: ["Atlantique", "Indien", "Pacifique", "Arctique"],
         correctAnswer: "Pacifique"
+    },
+    {
+        type: 'Baysien',
+        question: "Répartissez votre confiance sur ces réponses (en %)",
+        options: ["Atlantique", "Indien", "Pacifique", "Arctique"],
+        correctAnswer: "Pacifique"
+    },
+    {
+        type: 'QCU',
+        question: "Quelle est la capitale de l'Italie ?",
+        options: ["Rome", "Milan", "Venise", "Naples"],
+        correctAnswer: "Rome"
+    },
+    {
+        type: 'Baysien',
+        question: "Répartissez votre confiance sur ces réponses (en %)",
+        options: ["Rome", "Milan", "Venise", "Naples"],
+        correctAnswer: "Rome"
+    },
+    {
+        type: 'QCU',
+        question: "Quel est l'élément chimique dont le symbole est O ?",
+        options: ["Oxygène", "Or", "Ozone", "Osmium"],
+        correctAnswer: "Oxygène"
+    },
+    {
+        type: 'Baysien',
+        question: "Répartissez votre confiance sur ces réponses (en %)",
+        options: ["Oxygène", "Or", "Ozone", "Osmium"],
+        correctAnswer: "Oxygène"
     }
-    // Ajouter d'autres questions ici
 ];
 
 // Variable pour suivre l'indice de la question actuelle
@@ -125,3 +154,4 @@ function startQuiz() {
 
 // Exécution de la fonction de démarrage lorsque la page est chargée
 window.onload = startQuiz;
+
