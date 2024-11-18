@@ -1,161 +1,108 @@
-// Tableau des questions du mini-questionnaire
+// Variables globales pour garder la trace de l'état du quiz
+let currentQuestionIndex = 0;
+let totalScoreBarème1 = 0;
+let totalScoreBarème2 = 0;
+let questionTimeouts = []; // Tableau pour stocker le temps passé sur chaque question
+
+// Questions du mini-quiz
 const questions = [
     {
-        type: 'QCU',
-        question: "Quel est la capitale de la France ?",
-        options: ["Paris", "Lyon", "Marseille", "Toulouse"],
-        correctAnswer: "Paris"
+        question: "Quelle est la couleur du ciel ?",
+        options: ["Bleu", "Vert", "Rouge", "Jaune"],
+        correctAnswerBarème1: "Bleu",
+        correctAnswerBarème2: [0, 100, 0, 0]  // Par exemple, "Bleu" = 100% et les autres = 0%
     },
     {
-        type: 'Baysien',
-        question: "Répartissez votre confiance sur ces réponses (en %)",
-        options: ["Paris", "Lyon", "Marseille", "Toulouse"],
-        correctAnswer: "Paris"
+        question: "Quel est l'animal roi de la savane ?",
+        options: ["Lion", "Éléphant", "Tigre", "Zèbre"],
+        correctAnswerBarème1: "Lion",
+        correctAnswerBarème2: [100, 0, 0, 0]  // "Lion" = 100% et les autres = 0%
     },
     {
-        type: 'QCU',
-        question: "Quel est le plus grand océan du monde ?",
-        options: ["Atlantique", "Indien", "Pacifique", "Arctique"],
-        correctAnswer: "Pacifique"
-    },
-    {
-        type: 'Baysien',
-        question: "Répartissez votre confiance sur ces réponses (en %)",
-        options: ["Atlantique", "Indien", "Pacifique", "Arctique"],
-        correctAnswer: "Pacifique"
-    },
-    {
-        type: 'QCU',
-        question: "Quelle est la capitale de l'Italie ?",
-        options: ["Rome", "Milan", "Venise", "Naples"],
-        correctAnswer: "Rome"
-    },
-    {
-        type: 'Baysien',
-        question: "Répartissez votre confiance sur ces réponses (en %)",
-        options: ["Rome", "Milan", "Venise", "Naples"],
-        correctAnswer: "Rome"
-    },
-    {
-        type: 'QCU',
-        question: "Quel est l'élément chimique dont le symbole est O ?",
-        options: ["Oxygène", "Or", "Ozone", "Osmium"],
-        correctAnswer: "Oxygène"
-    },
-    {
-        type: 'Baysien',
-        question: "Répartissez votre confiance sur ces réponses (en %)",
-        options: ["Oxygène", "Or", "Ozone", "Osmium"],
-        correctAnswer: "Oxygène"
+        question: "Combien de continents y a-t-il ?",
+        options: ["5", "6", "7", "8"],
+        correctAnswerBarème1: "7",
+        correctAnswerBarème2: [0, 0, 100, 0]  // "7" = 100% et les autres = 0%
     }
 ];
 
-// Variable pour suivre l'indice de la question actuelle
-let currentQuestionIndex = 0;
-
-// Fonction pour afficher la question actuelle
+// Fonction pour afficher la question et les options de réponse
 function displayQuestion() {
-    const question = questions[currentQuestionIndex];
-    const questionContainer = document.getElementById('question-container');
-    questionContainer.innerHTML = '';
+    const currentQuestion = questions[currentQuestionIndex];
+    
+    // Afficher la question
+    const questionElement = document.getElementById("question");
+    questionElement.textContent = currentQuestion.question;
 
-    const questionTitle = document.createElement('h2');
-    questionTitle.textContent = `${currentQuestionIndex + 1}. ${question.question}`;
-    questionContainer.appendChild(questionTitle);
+    // Afficher les options de réponse sous forme de cases à cocher ou de radios
+    const optionsContainer = document.getElementById("options-container");
+    optionsContainer.innerHTML = "";  // Réinitialiser les options à chaque question
 
-    if (question.type === 'QCU') {
-        displayQCU(question);
-    } else if (question.type === 'Baysien') {
-        displayBaysien(question);
-    }
+    currentQuestion.options.forEach((option, index) => {
+        const label = document.createElement("label");
+        label.textContent = option;
 
-    // Mettre à jour l'indicateur de progression
-    const progressIndicator = document.getElementById('progress');
-    progressIndicator.textContent = `Question ${currentQuestionIndex + 1}/${questions.length}`;
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "answer";
+        input.value = option;
 
-    // Si on est sur la dernière question, masquer le bouton "Question suivante"
-    const nextButton = document.getElementById('next-button');
-    if (currentQuestionIndex === questions.length - 1) {
-        nextButton.style.display = 'none'; // Cacher le bouton après la dernière question
-    } else {
-        nextButton.style.display = 'inline'; // Afficher le bouton si ce n'est pas la dernière question
-    }
-}
-
-// Fonction pour afficher une question QCU
-function displayQCU(question) {
-    question.options.forEach(option => {
-        const optionLabel = document.createElement('label');
-        optionLabel.style.display = 'block'; // Options disposées verticalement
-        optionLabel.innerHTML = `
-            <input type="radio" name="question-${currentQuestionIndex}" value="${option}">
-            ${option}
-        `;
-        document.getElementById('question-container').appendChild(optionLabel);
+        label.prepend(input);
+        optionsContainer.appendChild(label);
+        optionsContainer.appendChild(document.createElement("br"));  // Pour espacer chaque option
     });
+
+    // Afficher le bouton "Question suivante" seulement après une réponse
+    const nextButton = document.getElementById("next-button");
+    nextButton.style.display = "none";  // Le bouton est caché par défaut
 }
 
-// Fonction pour afficher une question avec le barème Baysien
-function displayBaysien(question) {
-    question.options.forEach(option => {
-        const optionLabel = document.createElement('label');
-        optionLabel.style.display = 'block'; // Options disposées verticalement
-        optionLabel.innerHTML = `
-            ${option} :
-            <input type="number" name="question-${currentQuestionIndex}-percentage" min="0" max="100" step="1" placeholder="0" required>
-            %<br>
-        `;
-        document.getElementById('question-container').appendChild(optionLabel);
-    });
-}
-
-// Fonction pour vérifier les réponses avant de passer à la question suivante
-function validateAnswer() {
-    const question = questions[currentQuestionIndex];
-
-    if (question.type === 'QCU') {
-        // Vérifier si une réponse a été sélectionnée
-        const selectedOption = document.querySelector(`input[name="question-${currentQuestionIndex}"]:checked`);
-        if (!selectedOption) {
-            alert('Veuillez répondre à la question avant de passer à la suivante.');
-            return false;  // Empêche de passer à la question suivante
-        }
-    } else if (question.type === 'Baysien') {
-        // Vérifier si la somme des pourcentages est égale à 100%
-        const percentageInputs = document.querySelectorAll(`input[name="question-${currentQuestionIndex}-percentage"]`);
-        let totalPercentage = 0;
-        percentageInputs.forEach(input => {
-            totalPercentage += parseFloat(input.value) || 0;  // Ajoute les valeurs des entrées de pourcentage
-        });
-
-        if (totalPercentage !== 100) {
-            alert('La somme des pourcentages doit être égale à 100%.');
-            return false;  // Empêche de passer à la question suivante
-        }
+// Fonction pour vérifier si une réponse a été sélectionnée
+function checkAnswer() {
+    const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+    if (!selectedAnswer) {
+        alert("Veuillez répondre à la question avant de passer à la suivante.");
+        return false;
     }
-
-    return true;  // Si toutes les validations sont réussies, on peut passer à la question suivante
+    return true;
 }
 
 // Fonction pour passer à la question suivante
 function nextQuestion() {
-    if (validateAnswer()) {
-        currentQuestionIndex++;  // Incrémenter l'indice de la question
+    if (!checkAnswer()) {
+        return;  // Ne pas passer à la question suivante si aucune réponse n'est donnée
+    }
 
-        if (currentQuestionIndex < questions.length) {
-            displayQuestion();  // Afficher la prochaine question
-        } else {
-            // Si c'est la dernière question, afficher un message de fin
-            alert("Vous avez terminé le questionnaire !");
-        }
+    // Calculer les scores
+    const currentQuestion = questions[currentQuestionIndex];
+    const selectedAnswer = document.querySelector('input[name="answer"]:checked').value;
+
+    if (selectedAnswer === currentQuestion.correctAnswerBarème1) {
+        totalScoreBarème1++;
+    }
+
+    const selectedAnswerIndex = currentQuestion.options.indexOf(selectedAnswer);
+    if (currentQuestion.correctAnswerBarème2[selectedAnswerIndex] === 100) {
+        totalScoreBarème2++;
+    }
+
+    // Passer à la question suivante
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questions.length) {
+        displayQuestion();  // Afficher la question suivante
+    } else {
+        // Si c'est la dernière question, afficher un message de fin
+        const result = document.getElementById("result");
+        result.textContent = `Votre score Barème 1 : ${totalScoreBarème1} / ${questions.length}\n` +
+                             `Votre score Barème 2 : ${totalScoreBarème2} / ${questions.length}`;
     }
 }
 
-// Fonction pour initialiser le questionnaire
-function startQuiz() {
-    currentQuestionIndex = 0;  // Réinitialiser l'indice de la question
+// Initialiser le quiz
+window.onload = function() {
     displayQuestion();  // Afficher la première question
-}
-
-// Exécution de la fonction de démarrage lorsque la page est chargée
-window.onload = startQuiz;
+    
+    const nextButton = document.getElementById("next-button");
+    nextButton.addEventListener("click", nextQuestion);  // Ajouter l'événement de clic sur le bouton
+};
