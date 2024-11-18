@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini-questionnaire de familiarisation</title>
-    <link rel="stylesheet" href="style.css"> <!-- Lien vers le fichier CSS -->
+    <title>Mini-quiz</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="quiz-container">
-        <h1>Mini-Questionnaire : Familiarisation avec le format</h1>
-        
-        <!-- Zone où les questions et réponses seront affichées -->
-        <div id="question-container"></div>
-        
-        <!-- Bouton pour commencer le vrai questionnaire -->
-        <button id="start-real-quiz-btn" style="display: none;">Démarrer le questionnaire</button>
+        <h2 id="question"></h2>
+        <div id="options-container"></div>
+        <button id="next-button" style="display: none;">Question suivante</button>
+        <div id="result"></div>
     </div>
 
-    <script src="mini-quiz.js"></script> <!-- Lien vers le fichier JavaScript pour la logique -->
+    <script src="mini-quiz.js"></script>
 </body>
 </html>
