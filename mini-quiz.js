@@ -2,7 +2,7 @@
 const questions = [
     {
         type: 'QCU',
-        question: "Quel est le capital de la France ?",
+        question: "Quel est la capitale de la France ?",
         options: ["Paris", "Lyon", "Marseille", "Toulouse"],
         correctAnswer: "Paris"
     },
@@ -86,7 +86,11 @@ function displayQuestion() {
 function displayQCU(question) {
     question.options.forEach(option => {
         const optionLabel = document.createElement('label');
-        optionLabel.innerHTML = `<input type="radio" name="question-${currentQuestionIndex}" value="${option}">${option}`;
+        optionLabel.style.display = 'block'; // Options disposées verticalement
+        optionLabel.innerHTML = `
+            <input type="radio" name="question-${currentQuestionIndex}" value="${option}">
+            ${option}
+        `;
         document.getElementById('question-container').appendChild(optionLabel);
     });
 }
@@ -95,6 +99,7 @@ function displayQCU(question) {
 function displayBaysien(question) {
     question.options.forEach(option => {
         const optionLabel = document.createElement('label');
+        optionLabel.style.display = 'block'; // Options disposées verticalement
         optionLabel.innerHTML = `
             ${option} :
             <input type="number" name="question-${currentQuestionIndex}-percentage" min="0" max="100" step="1" placeholder="0" required>
@@ -154,4 +159,3 @@ function startQuiz() {
 
 // Exécution de la fonction de démarrage lorsque la page est chargée
 window.onload = startQuiz;
-
