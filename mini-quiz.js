@@ -52,9 +52,17 @@ function displayQuestion() {
         optionsContainer.appendChild(document.createElement("br"));  // Pour espacer chaque option
     });
 
-    // Afficher le bouton "Question suivante" seulement après une réponse
+    // Cacher le bouton "Question suivante" tant qu'aucune réponse n'est sélectionnée
     const nextButton = document.getElementById("next-button");
     nextButton.style.display = "none";  // Le bouton est caché par défaut
+
+    // Ajouter un événement pour afficher le bouton une fois une réponse choisie
+    const inputs = optionsContainer.querySelectorAll('input[name="answer"]');
+    inputs.forEach(input => {
+        input.addEventListener('change', function() {
+            nextButton.style.display = "block";  // Afficher le bouton "Suivant"
+        });
+    });
 }
 
 // Fonction pour vérifier si une réponse a été sélectionnée
@@ -106,3 +114,4 @@ window.onload = function() {
     const nextButton = document.getElementById("next-button");
     nextButton.addEventListener("click", nextQuestion);  // Ajouter l'événement de clic sur le bouton
 };
+
