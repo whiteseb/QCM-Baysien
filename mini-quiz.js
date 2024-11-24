@@ -38,6 +38,7 @@ function displayQuestion() {
     const optionsContainer = document.getElementById("options-container");
     optionsContainer.innerHTML = "";  // Réinitialiser les options à chaque question
 
+    // Affichage du QCM classique (barème 1)
     currentQuestion.options.forEach((option, index) => {
         const label = document.createElement("label");
         label.textContent = option;
@@ -52,6 +53,23 @@ function displayQuestion() {
         optionsContainer.appendChild(document.createElement("br"));  // Pour espacer chaque option
     });
 
+    // Afficher la section pour les pourcentages (barème bayésien)
+    const percentagesContainer = document.getElementById("percentages-container");
+    percentagesContainer.innerHTML = "<label>Entrez les pourcentages pour chaque option (total = 100) :</label><br>";
+
+    currentQuestion.options.forEach((option, index) => {
+        const input = document.createElement("input");
+        input.type = "number";
+        input.min = 0;
+        input.max = 100;
+        input.name = "percentages";
+        input.placeholder = `Pourcentage pour ${option}`;
+        input.setAttribute("data-index", index);
+
+        percentagesContainer.appendChild(input);
+        percentagesContainer.appendChild(document.createElement("br"));
+    });
+
     // Cacher le bouton "Question suivante" tant qu'aucune réponse n'est sélectionnée
     const nextButton = document.getElementById("next-button");
     nextButton.style.display = "none";  // Le bouton est caché par défaut
@@ -63,6 +81,9 @@ function displayQuestion() {
             nextButton.style.display = "block";  // Afficher le bouton "Suivant"
         });
     });
+
+    // Montrer le container pour les pourcentages
+    percentagesContainer.style.display = "block";
 }
 
 // Fonction pour vérifier si une réponse a été sélectionnée
@@ -72,6 +93,23 @@ function checkAnswer() {
         alert("Veuillez répondre à la question avant de passer à la suivante.");
         return false;
     }
+    
+    // Vérifier que les pourcentages sont correctement remplis
+    const percentageInputs = document.querySelectorAll('input[name="percentages"]');
+    let totalPercentage = 0;
+    
+    percentageInputs.forEach(input => {
+        const percentageValue = parseFloat(input.value);
+        if (!isNaN(percentageValue)) {
+            totalPercentage += percentageValue;
+        }
+    });
+    
+    if (totalPercentage !== 100) {
+        alert("Les pourcentages doivent être égaux à 100.");
+        return false;
+    }
+
     return true;
 }
 
@@ -81,7 +119,7 @@ function nextQuestion() {
         return;  // Ne pas passer à la question suivante si aucune réponse n'est donnée
     }
 
-    // Calculer les scores
+    // Calculer les scores pour le barème 1 (QCM classique)
     const currentQuestion = questions[currentQuestionIndex];
     const selectedAnswer = document.querySelector('input[name="answer"]:checked').value;
 
@@ -89,10 +127,15 @@ function nextQuestion() {
         totalScoreBarème1++;
     }
 
-    const selectedAnswerIndex = currentQuestion.options.indexOf(selectedAnswer);
-    if (currentQuestion.correctAnswerBarème2[selectedAnswerIndex] === 100) {
-        totalScoreBarème2++;
-    }
+    // Calculer les scores pour le barème bayésien (pourcentages)
+    const percentageInputs = document.querySelectorAll('input[name="percentages"]');
+    percentageInputs.forEach(input => {
+        const percentageValue = parseFloat(input.value);
+        const optionIndex = input.getAttribute("data-index");
+        if (percentageValue === currentQuestion.correctAnswerBarème2[optionIndex]) {
+            totalScoreBarème2++;
+        }
+    });
 
     // Passer à la question suivante
     currentQuestionIndex++;
