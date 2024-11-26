@@ -3,7 +3,6 @@ let currentQuestionIndex = 0;
 let currentBarèmeType = 0;  // 0 pour barème classique, 1 pour barème bayésien
 let totalScoreBarème1 = 0;
 let totalScoreBarème2 = 0;
-let questionTimeouts = []; // Tableau pour stocker le temps passé sur chaque question
 
 // Questions du mini-quiz
 const questions = [
@@ -11,7 +10,7 @@ const questions = [
         question: "Quelle est la couleur du ciel ?",
         options: ["Bleu", "Vert", "Rouge", "Jaune"],
         correctAnswerBarème1: "Bleu",
-        correctAnswerBarème2: [0, 100, 0, 0]  // Par exemple, "Bleu" = 100% et les autres = 0%
+        correctAnswerBarème2: [0, 100, 0, 0]  // "Bleu" = 100% et les autres = 0%
     },
     {
         question: "Quel est l'animal roi de la savane ?",
@@ -27,16 +26,9 @@ const questions = [
     }
 ];
 
-// Mélanger les questions et les types de barèmes
-function shuffleQuestionsAndBarèmes() {
-    // Mélange les questions
+// Mélanger les questions
+function shuffleQuestions() {
     questions.sort(() => Math.random() - 0.5);
-    
-    // Pour chaque question, déterminer l'ordre aléatoire des barèmes
-    questions.forEach(question => {
-        question.barèmes = [0, 1];  // 0 : Barème classique, 1 : Barème bayésien
-        question.barèmes.sort(() => Math.random() - 0.5); // Mélanger l'ordre des barèmes pour chaque question
-    });
 }
 
 // Fonction pour afficher la question et les options de réponse pour le barème classique
@@ -143,20 +135,23 @@ function nextQuestion() {
 
         if (currentQuestionIndex < questions.length) {
             currentBarèmeType = 0;  // Revenir au barème classique pour la prochaine question
-            displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher le barème classique de la prochaine question
+            displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher la question suivante
         } else {
-            // Fin du quiz, afficher le résultat
+            // Fin du quiz
             const result = document.getElementById("result");
             result.textContent = `Votre score Barème 1 : ${totalScoreBarème1} / ${questions.length}\n` +
                                  `Votre score Barème 2 : ${totalScoreBarème2} / ${questions.length}`;
         }
     }
+
+    // Montrer le bouton "Question suivante"
+    document.getElementById("next-button").style.display = "block";
 }
 
 // Initialiser le quiz
 window.onload = function() {
-    shuffleQuestionsAndBarèmes();  // Mélanger les questions et les barèmes
-    displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher le barème classique de la première question
+    shuffleQuestions();  // Mélanger les questions
+    displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher la première question avec le barème classique
 
     const nextButton = document.getElementById("next-button");
     nextButton.addEventListener("click", nextQuestion);  // Ajouter l'événement de clic sur le bouton
