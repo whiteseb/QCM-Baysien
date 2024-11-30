@@ -53,6 +53,9 @@ function displayBarèmeClassique(question) {
     // Montrer le conteneur pour le barème classique
     document.getElementById("barème-classique-container").style.display = "block";
     document.getElementById("barème-bayésien-container").style.display = "none";
+
+    // Montrer le bouton pour passer à l'étape suivante
+    document.getElementById("next-button").style.display = "block";
 }
 
 // Fonction pour afficher le barème bayésien
@@ -97,7 +100,7 @@ function checkBarèmeClassique(question) {
 function checkBarèmeBayésien(question) {
     const percentageInputs = document.querySelectorAll('input[name="percentages"]');
     let totalPercentage = 0;
-    
+
     percentageInputs.forEach(input => {
         const percentageValue = parseFloat(input.value);
         if (!isNaN(percentageValue)) {
