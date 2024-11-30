@@ -31,6 +31,11 @@ function shuffleQuestions() {
     questions.sort(() => Math.random() - 0.5);
 }
 
+// Mélanger l'ordre des barèmes pour chaque question
+function getRandomBarème() {
+    return Math.random() < 0.5 ? 0 : 1;  // Retourne 0 (barème classique) ou 1 (barème bayésien)
+}
+
 // Fonction pour afficher l'énoncé de la question
 function displayQuestionText(question) {
     const questionElement = document.getElementById("question");
@@ -150,8 +155,12 @@ function nextQuestion() {
         currentQuestionIndex++;  // Passer à la question suivante
 
         if (currentQuestionIndex < questions.length) {
-            currentBarèmeType = 0;  // Revenir au barème classique pour la prochaine question
-            displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher la question suivante
+            currentBarèmeType = getRandomBarème();  // Choisir un barème aléatoire pour la prochaine question
+            if (currentBarèmeType === 0) {
+                displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher le barème classique
+            } else {
+                displayBarèmeBayésien(questions[currentQuestionIndex]);  // Afficher le barème bayésien
+            }
         } else {
             // Fin du quiz
             const result = document.getElementById("result");
@@ -170,8 +179,14 @@ function nextQuestion() {
 // Initialiser le quiz
 window.onload = function() {
     shuffleQuestions();  // Mélanger les questions
-    displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher la première question avec le barème classique
+    currentBarèmeType = getRandomBarème();  // Choisir un barème aléatoire pour la première question
+    if (currentBarèmeType === 0) {
+        displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher le barème classique
+    } else {
+        displayBarèmeBayésien(questions[currentQuestionIndex]);  // Afficher le barème bayésien
+    }
 
     const nextButton = document.getElementById("next-button");
     nextButton.addEventListener("click", nextQuestion);  // Ajouter l'événement de clic sur le bouton
 };
+
