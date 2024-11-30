@@ -31,10 +31,19 @@ function shuffleQuestions() {
     questions.sort(() => Math.random() - 0.5);
 }
 
+// Fonction pour afficher l'énoncé de la question
+function displayQuestionText(question) {
+    const questionElement = document.getElementById("question");
+    questionElement.textContent = question.question;
+}
+
 // Fonction pour afficher la question et les options de réponse pour le barème classique
 function displayBarèmeClassique(question) {
     const optionsContainer = document.getElementById("options-container");
     optionsContainer.innerHTML = "";  // Réinitialiser les options
+
+    // Affichage de l'énoncé de la question
+    displayQuestionText(question);
 
     question.options.forEach((option, index) => {
         const label = document.createElement("label");
@@ -53,15 +62,15 @@ function displayBarèmeClassique(question) {
     // Montrer le conteneur pour le barème classique
     document.getElementById("barème-classique-container").style.display = "block";
     document.getElementById("barème-bayésien-container").style.display = "none";
-
-    // Montrer le bouton pour passer à l'étape suivante
-    document.getElementById("next-button").style.display = "block";
 }
 
 // Fonction pour afficher le barème bayésien
 function displayBarèmeBayésien(question) {
     const percentagesContainer = document.getElementById("percentages-container");
     percentagesContainer.innerHTML = "<label>Entrez les pourcentages pour chaque option (total = 100) :</label><br>";
+
+    // Affichage de l'énoncé de la question
+    displayQuestionText(question);
 
     question.options.forEach((option, index) => {
         const input = document.createElement("input");
@@ -100,7 +109,7 @@ function checkBarèmeClassique(question) {
 function checkBarèmeBayésien(question) {
     const percentageInputs = document.querySelectorAll('input[name="percentages"]');
     let totalPercentage = 0;
-
+    
     percentageInputs.forEach(input => {
         const percentageValue = parseFloat(input.value);
         if (!isNaN(percentageValue)) {
