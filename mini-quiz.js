@@ -37,7 +37,7 @@ function displayQuestionText(question) {
     questionElement.textContent = question.question;
 }
 
-// Fonction pour afficher la question et les options de réponse pour le barème classique
+// Fonction pour afficher le barème classique
 function displayBarèmeClassique(question) {
     const optionsContainer = document.getElementById("options-container");
     optionsContainer.innerHTML = "";  // Réinitialiser les options
@@ -137,7 +137,8 @@ function checkBarèmeBayésien(question) {
 function nextQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
 
-    if (currentBarèmeType === 0) {  // Si c'est le barème classique
+    // Si c'est le barème classique
+    if (currentBarèmeType === 0) {
         if (!checkBarèmeClassique(currentQuestion)) return;  // Vérifier la réponse classique
         currentBarèmeType = 1;  // Passer au barème bayésien
         displayBarèmeBayésien(currentQuestion);  // Afficher le barème bayésien
@@ -157,7 +158,10 @@ function nextQuestion() {
     }
 
     // Montrer le bouton "Question suivante"
-    document.getElementById("next-button").style.display = "block";
+    document.getElementById("next-button").style.display = "none";  // Cacher le bouton après chaque passage
+    setTimeout(() => {
+        document.getElementById("next-button").style.display = "block";  // Afficher le bouton "question suivante"
+    }, 500); // Assurer que le bouton est caché juste après le changement
 }
 
 // Initialiser le quiz
