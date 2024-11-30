@@ -168,3 +168,4 @@ window.onload = function() {
     const nextButton = document.getElementById("next-button");
     nextButton.addEventListener("click", nextQuestion);  // Ajouter l'événement de clic sur le bouton
 };
+
