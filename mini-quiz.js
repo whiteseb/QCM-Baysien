@@ -1,13 +1,3 @@
-// Variables globales pour garder la trace de l'état du quiz
-let currentQuestionIndex = 0;
-let currentBarèmeType = 0;  // 0 pour barème classique, 1 pour barème bayésien
-let totalScoreBarème1 = 0;
-let totalScoreBarème2 = 0;
-
-// Suivi des réponses pour chaque question
-let answeredClassique = Array(questions.length).fill(false);
-let answeredBayesien = Array(questions.length).fill(false);
-
 // Questions du mini-quiz
 const questions = [
     {
@@ -29,6 +19,10 @@ const questions = [
         correctAnswerBarème2: [0, 0, 100, 0]  // "7" = 100% et les autres = 0%
     }
 ];
+
+// Initialiser les tableaux de suivi après la déclaration de questions
+let answeredClassique = Array(questions.length).fill(false);
+let answeredBayesien = Array(questions.length).fill(false);
 
 // Mélanger les questions
 function shuffleQuestions() {
@@ -202,8 +196,5 @@ function nextQuestion() {
 // Initialiser le quiz
 window.onload = function() {
     shuffleQuestions();  // Mélanger les questions
-    displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher la première question avec le barème classique
-
-    const nextButton = document.getElementById("next-button");
-    nextButton.addEventListener("click", nextQuestion);  // Ajouter l'événement de clic sur le bouton
+    displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher le premier barème
 };
