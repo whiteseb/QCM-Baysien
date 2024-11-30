@@ -62,6 +62,9 @@ function displayBarèmeClassique(question) {
     // Montrer le conteneur pour le barème classique
     document.getElementById("barème-classique-container").style.display = "block";
     document.getElementById("barème-bayésien-container").style.display = "none";
+
+    // Montrer le bouton pour passer à l'étape suivante
+    document.getElementById("next-button").style.display = "block";
 }
 
 // Fonction pour afficher le barème bayésien
@@ -98,18 +101,19 @@ function checkBarèmeClassique(question) {
         return false;
     }
 
+    // Vérifier si la réponse est correcte (cela ne bloque plus la progression)
     if (selectedAnswer.value === question.correctAnswerBarème1) {
         totalScoreBarème1++;
     }
 
-    return true;
+    return true;  // On permet de passer au barème suivant même si la réponse est incorrecte
 }
 
 // Fonction pour vérifier la réponse donnée par l'utilisateur pour le barème bayésien
 function checkBarèmeBayésien(question) {
     const percentageInputs = document.querySelectorAll('input[name="percentages"]');
     let totalPercentage = 0;
-    
+
     percentageInputs.forEach(input => {
         const percentageValue = parseFloat(input.value);
         if (!isNaN(percentageValue)) {
@@ -137,8 +141,7 @@ function checkBarèmeBayésien(question) {
 function nextQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
 
-    // Si c'est le barème classique
-    if (currentBarèmeType === 0) {
+    if (currentBarèmeType === 0) {  // Si c'est le barème classique
         if (!checkBarèmeClassique(currentQuestion)) return;  // Vérifier la réponse classique
         currentBarèmeType = 1;  // Passer au barème bayésien
         displayBarèmeBayésien(currentQuestion);  // Afficher le barème bayésien
@@ -172,4 +175,3 @@ window.onload = function() {
     const nextButton = document.getElementById("next-button");
     nextButton.addEventListener("click", nextQuestion);  // Ajouter l'événement de clic sur le bouton
 };
-
