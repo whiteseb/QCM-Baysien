@@ -85,13 +85,22 @@ function displayBarèmeBayésien(question) {
         input.placeholder = `Pourcentage pour ${option}`;
         input.setAttribute("data-index", index);
 
-        // Ajouter l'input au conteneur, sans retour à la ligne
+        // Ajouter l'input au conteneur
         percentagesContainer.appendChild(input);
 
-        // Ajouter l'intitulé de l'option juste après le champ de saisie, sur la même ligne
+        // Ajouter un petit espace (10px) après le champ de saisie
+        const space = document.createElement("span");
+        space.style.display = "inline-block";
+        space.style.width = "10px";  // Petite largeur pour l'espace
+        percentagesContainer.appendChild(space);
+
+        // Ajouter l'intitulé de l'option juste après l'espace, sur la même ligne
         const label = document.createElement("label");
         label.textContent = option;  // Intitulé de l'option
         percentagesContainer.appendChild(label);
+
+        // Ajouter un retour à la ligne après chaque option
+        percentagesContainer.appendChild(document.createElement("br"));
     });
 
     // Montrer le conteneur pour le barème bayésien
