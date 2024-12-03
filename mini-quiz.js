@@ -76,6 +76,7 @@ function displayBarèmeBayésien(question) {
     displayQuestionText(question);
 
     question.options.forEach((option, index) => {
+        // Créer un champ de saisie pour chaque pourcentage
         const input = document.createElement("input");
         input.type = "number";
         input.min = 0;
@@ -84,7 +85,14 @@ function displayBarèmeBayésien(question) {
         input.placeholder = `Pourcentage pour ${option}`;
         input.setAttribute("data-index", index);
 
+        // Ajouter l'input au conteneur
         percentagesContainer.appendChild(input);
+        percentagesContainer.appendChild(document.createElement("br"));
+
+        // Ajouter l'intitulé de l'option juste après le champ de saisie
+        const label = document.createElement("label");
+        label.textContent = option;  // Intitulé de l'option
+        percentagesContainer.appendChild(label);
         percentagesContainer.appendChild(document.createElement("br"));
     });
 
