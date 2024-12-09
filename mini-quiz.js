@@ -26,6 +26,14 @@ const questions = [
     }
 ];
 
+// Mélange des questions pour randomisation
+function shuffleQuestions() {
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+}
+
 // Fonction pour masquer tous les blocs
 function hideAllBlocks() {
     const blocks = document.querySelectorAll('div[id^="question"]');
@@ -162,6 +170,7 @@ function nextQuestion() {
 
 // Initialisation du quiz
 function startQuiz() {
+    shuffleQuestions();  // Mélanger les questions avant le début
     displayQuestionBarèmeClassique(questions[currentQuestionIndex], currentQuestionIndex + 1);
 }
 
@@ -170,3 +179,4 @@ document.getElementById("next-button").addEventListener("click", nextQuestion);
 
 // Démarrer le quiz à l'ouverture de la page
 startQuiz();
+
