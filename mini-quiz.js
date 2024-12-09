@@ -131,4 +131,3 @@ window.onload = function() {
     const nextButton = document.getElementById("next-button");
     nextButton.addEventListener("click", nextBlock);  // Ajouter l'événement de clic pour passer au bloc suivant
 };
-
