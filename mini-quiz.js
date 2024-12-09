@@ -185,4 +185,3 @@ document.getElementById("next-button").addEventListener("click", nextQuestion);
 
 // Démarrer le quiz à l'ouverture de la page
 startQuiz();
-
