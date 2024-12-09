@@ -100,6 +100,12 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
         percentagesContainer.appendChild(document.createElement("br"));
     });
 
+    // Réinitialisation des champs de pourcentage
+    const inputs = percentagesContainer.querySelectorAll('input[type="number"]');
+    inputs.forEach(input => {
+        input.value = "";  // Réinitialisation des valeurs
+    });
+
     document.getElementById(`question${questionIndex}-baremebaysien`).style.display = "block";
     document.getElementById("next-button").style.display = "block";
 }
