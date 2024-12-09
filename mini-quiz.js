@@ -59,9 +59,9 @@ function displayBarèmeClassique(question) {
         optionsContainer.appendChild(document.createElement("br"));
     });
 
-    // Montrer le conteneur pour le barème classique
-    document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`).style.display = "block";
+    // Masquer les autres blocs
     document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`).style.display = "none";
+    document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`).style.display = "block";
 
     // Montrer le bouton pour passer à l'étape suivante
     document.getElementById("next-button").style.display = "block";
@@ -103,7 +103,7 @@ function displayBarèmeBayésien(question) {
         percentagesContainer.appendChild(document.createElement("br"));
     });
 
-    // Montrer le conteneur pour le barème bayésien
+    // Masquer le bloc précédent et afficher le barème bayésien
     document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`).style.display = "none";
     document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`).style.display = "block";
 
