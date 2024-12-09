@@ -1,5 +1,6 @@
 // Variables globales pour garder la trace de l'état du quiz
-let currentBlockIndex = 0;  // Indice du bloc actuel dans l'ordre mélangé
+let currentQuestionIndex = 0;
+let currentBarèmeType = 0;  // 0 pour barème classique, 1 pour barème bayésien
 let totalScoreBarème1 = 0;
 let totalScoreBarème2 = 0;
 
@@ -25,16 +26,9 @@ const questions = [
     }
 ];
 
-// Mélanger les blocs
-function shuffleBlocks() {
-    const blocks = [];
-    questions.forEach((question, index) => {
-        // Ajouter chaque bloc de question avec chaque barème
-        blocks.push({questionIndex: index, barèmeType: 0});  // Barème classique
-        blocks.push({questionIndex: index, barèmeType: 1});  // Barème bayésien
-    });
-    blocks.sort(() => Math.random() - 0.5);  // Mélanger les blocs de manière aléatoire
-    return blocks;
+// Mélanger les questions
+function shuffleQuestions() {
+    questions.sort(() => Math.random() - 0.5);
 }
 
 // Fonction pour afficher l'énoncé de la question
@@ -43,13 +37,23 @@ function displayQuestionText(question) {
     questionElement.textContent = question.question;
 }
 
+// Fonction pour masquer tous les blocs (barème classique et bayésien)
+function hideAllBlocks() {
+    for (let i = 1; i <= questions.length; i++) {
+        document.getElementById(`question${i}-baremeclassique`).style.display = "none";
+        document.getElementById(`question${i}-baremebaysien`).style.display = "none";
+    }
+}
+
 // Fonction pour afficher le barème classique
-function displayBarèmeClassique(question, index) {
-    const optionsContainer = document.getElementById(`options-container${index + 1}`);
+function displayBarèmeClassique(question) {
+    const optionsContainer = document.getElementById(`options-container${currentQuestionIndex + 1}`);
     optionsContainer.innerHTML = "";  // Réinitialiser les options
+
+    // Affichage de l'énoncé de la question
     displayQuestionText(question);
 
-    question.options.forEach((option, i) => {
+    question.options.forEach((option) => {
         const label = document.createElement("label");
         label.textContent = option;
 
@@ -63,53 +67,53 @@ function displayBarèmeClassique(question, index) {
         optionsContainer.appendChild(document.createElement("br"));
     });
 
-    // Masquer les autres blocs et afficher le barème classique
-    hideAllBlocks();
-    document.getElementById(`question${index + 1}-baremeclassique`).style.display = "block";
-    document.getElementById("next-button").style.display = "block";
+    // Montrer le conteneur pour le barème classique
+    document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`).style.display = "block";
+    document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`).style.display = "none";
 }
 
 // Fonction pour afficher le barème bayésien
-function displayBarèmeBayésien(question, index) {
-    const percentagesContainer = document.getElementById(`percentages-container${index + 1}`);
+function displayBarèmeBayésien(question) {
+    const percentagesContainer = document.getElementById(`percentages-container${currentQuestionIndex + 1}`);
     percentagesContainer.innerHTML = "<label>Entrez les pourcentages pour chaque option (total = 100) :</label><br>";
+
+    // Affichage de l'énoncé de la question
     displayQuestionText(question);
 
-    question.options.forEach((option, i) => {
+    question.options.forEach((option, index) => {
+        // Créer un champ de saisie pour chaque pourcentage
         const input = document.createElement("input");
         input.type = "number";
         input.min = 0;
         input.max = 100;
         input.name = "percentages";
         input.placeholder = `Pourcentage pour ${option}`;
-        input.setAttribute("data-index", i);
+        input.setAttribute("data-index", index);
+
+        // Ajouter l'input au conteneur
         percentagesContainer.appendChild(input);
 
+        // Ajouter un petit espace (10px) après le champ de saisie
         const space = document.createElement("span");
         space.style.display = "inline-block";
-        space.style.width = "10px";
+        space.style.width = "10px";  // Petite largeur pour l'espace
         percentagesContainer.appendChild(space);
 
+        // Ajouter l'intitulé de l'option juste après l'espace, sur la même ligne
         const label = document.createElement("label");
-        label.textContent = option;
+        label.textContent = option;  // Intitulé de l'option
         percentagesContainer.appendChild(label);
 
+        // Ajouter un retour à la ligne après chaque option
         percentagesContainer.appendChild(document.createElement("br"));
     });
 
-    hideAllBlocks();
-    document.getElementById(`question${index + 1}-baremebaysien`).style.display = "block";
-    document.getElementById("next-button").style.display = "block";
+    // Montrer le conteneur pour le barème bayésien
+    document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`).style.display = "none";
+    document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`).style.display = "block";
 }
 
-// Fonction pour masquer tous les blocs
-function hideAllBlocks() {
-    document.querySelectorAll('.question-block').forEach(block => {
-        block.style.display = "none";
-    });
-}
-
-// Fonction pour vérifier la réponse pour le barème classique
+// Fonction pour vérifier la réponse donnée par l'utilisateur pour le barème classique
 function checkBarèmeClassique(question) {
     const selectedAnswer = document.querySelector('input[name="answer"]:checked');
     if (!selectedAnswer) {
@@ -117,13 +121,15 @@ function checkBarèmeClassique(question) {
         return false;
     }
 
+    // Vérifier si la réponse est correcte (cela ne bloque plus la progression)
     if (selectedAnswer.value === question.correctAnswerBarème1) {
         totalScoreBarème1++;
     }
-    return true;
+
+    return true;  // On permet de passer au barème suivant même si la réponse est incorrecte
 }
 
-// Fonction pour vérifier la réponse pour le barème bayésien
+// Fonction pour vérifier la réponse donnée par l'utilisateur pour le barème bayésien
 function checkBarèmeBayésien(question) {
     const percentageInputs = document.querySelectorAll('input[name="percentages"]');
     let totalPercentage = 0;
@@ -153,38 +159,33 @@ function checkBarèmeBayésien(question) {
 
 // Fonction pour passer à la question suivante
 function nextQuestion() {
-    const currentBlock = blocks[currentBlockIndex];
-    const question = questions[currentBlock.questionIndex];
+    const currentQuestion = questions[currentQuestionIndex];
 
-    hideAllBlocks();
+    if (currentBarèmeType === 0) {  // Si c'est le barème classique
+        if (!checkBarèmeClassique(currentQuestion)) return;  // Vérifier la réponse classique
+        currentBarèmeType = 1;  // Passer au barème bayésien
+        displayBarèmeBayésien(currentQuestion);  // Afficher le barème bayésien
+    } else {  // Si c'est le barème bayésien
+        if (!checkBarèmeBayésien(currentQuestion)) return;  // Vérifier la réponse bayésienne
+        currentQuestionIndex++;  // Passer à la question suivante
+        currentBarèmeType = 0;  // Retourner au barème classique pour la prochaine question
 
-    if (currentBlock.barèmeType === 0) {
-        if (!checkBarèmeClassique(question)) return;
-        currentBlock.barèmeType = 1;
-        displayBarèmeBayésien(question, currentBlock.questionIndex);
-    } else {
-        if (!checkBarèmeBayésien(question)) return;
-        currentBlockIndex++;
-
-        if (currentBlockIndex < blocks.length) {
-            const nextBlock = blocks[currentBlockIndex];
-            const nextQuestion = questions[nextBlock.questionIndex];
-
-            if (nextBlock.barèmeType === 0) {
-                displayBarèmeClassique(nextQuestion, nextBlock.questionIndex);
-            } else {
-                displayBarèmeBayésien(nextQuestion, nextBlock.questionIndex);
-            }
+        if (currentQuestionIndex < questions.length) {
+            displayBarèmeClassique(questions[currentQuestionIndex]);
         } else {
-            const resultElement = document.getElementById("result");
-            resultElement.textContent = `Vous avez obtenu ${totalScoreBarème1} sur ${questions.length} au barème classique et ${totalScoreBarème2} sur ${questions.length} au barème bayésien.`;
-            document.getElementById("next-button").style.display = "none";
+            document.getElementById("quiz-container").innerHTML = `<h2>Quiz terminé !</h2><p>Score : ${totalScoreBarème1 + totalScoreBarème2} / ${questions.length * 2}</p>`;
         }
     }
 }
 
 // Initialisation du quiz
-const blocks = shuffleBlocks();  // Mélanger les blocs de manière aléatoire
-displayBarèmeClassique(questions[blocks[currentBlockIndex].questionIndex], blocks[currentBlockIndex].questionIndex);
+function startQuiz() {
+    shuffleQuestions();  // Mélanger les questions
+    displayBarèmeClassique(questions[currentQuestionIndex]);  // Afficher le barème classique de la première question
+    document.getElementById("next-button").style.display = "block";  // Afficher le bouton "Question suivante"
+}
 
 document.getElementById("next-button").addEventListener("click", nextQuestion);
+
+window.onload = startQuiz;
+
