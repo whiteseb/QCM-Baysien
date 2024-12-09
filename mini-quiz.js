@@ -10,7 +10,7 @@ const questions = [
         question: "Quelle est la couleur du ciel ?",
         options: ["Bleu", "Vert", "Rouge", "Jaune"],
         correctAnswerBarème1: "Bleu",
-        correctAnswerBarème2: [0, 100, 0, 0]  // "Bleu" = 100% et les autres = 0%
+        correctAnswerBarème2: [100, 0, 0, 0]  // "Bleu" = 100% et les autres = 0%
     },
     {
         question: "Quel est l'animal roi de la savane ?",
@@ -83,7 +83,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
         input.type = "number";
         input.min = 0;
         input.max = 100;
-        input.name = `percentages-${questionIndex}`;  // Ajouter l'index de la question pour que chaque question ait ses propres champs
+        input.name = `percentages-${questionIndex}`;
         input.placeholder = `Pourcentage pour ${option}`;
         input.setAttribute("data-index", index);
 
@@ -100,7 +100,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
         percentagesContainer.appendChild(document.createElement("br"));
     });
 
-    // Réinitialisation des champs de pourcentage pour cette question uniquement
+    // Réinitialisation des champs de pourcentage
     const inputs = percentagesContainer.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
         input.value = "";  // Réinitialisation des valeurs
@@ -126,8 +126,9 @@ function checkBarèmeClassique(question, questionIndex) {
 
 // Fonction pour vérifier la réponse donnée par l'utilisateur pour le barème bayésien
 function checkBarèmeBayésien(question, questionIndex) {
-    const percentageInputs = document.querySelectorAll(`input[name="percentages-${questionIndex}"]`);  // Sélectionner uniquement les champs de pourcentage de la question actuelle
+    const percentageInputs = document.querySelectorAll(`input[name="percentages-${questionIndex}"]`);
     let totalPercentage = 0;
+    let score = 0;
 
     percentageInputs.forEach(input => {
         const percentageValue = parseFloat(input.value);
@@ -141,14 +142,19 @@ function checkBarèmeBayésien(question, questionIndex) {
         return false;
     }
 
+    // Calcul du score basé sur la somme des carrés des erreurs
     percentageInputs.forEach(input => {
         const percentageValue = parseFloat(input.value);
         const optionIndex = input.getAttribute("data-index");
-        if (percentageValue === question.correctAnswerBarème2[optionIndex]) {
-            totalScoreBarème2++;
-        }
+        const error = percentageValue - question.correctAnswerBarème2[optionIndex];
+        score += error * error;  // Carré de l'erreur
     });
 
+    // Calcul du score final pour cette question : 1 - somme des carrés des erreurs
+    score = 1 - score;
+    if (score < 0) score = 0;  // Le score ne peut pas être inférieur à 0
+
+    totalScoreBarème2 += score;
     return true;
 }
 
@@ -168,7 +174,7 @@ function nextQuestion() {
             currentBarèmeType = 0;  // Revenir au barème classique pour la prochaine question
             displayQuestionBarèmeClassique(questions[currentQuestionIndex], currentQuestionIndex + 1);
         } else {
-            document.getElementById("result").textContent = `Quiz terminé ! Votre score est : ${totalScoreBarème1 + totalScoreBarème2}`;
+            document.getElementById("result").textContent = `Quiz terminé ! Votre score est : ${totalScoreBarème1} (barème classique) + ${totalScoreBarème2.toFixed(2)} (barème bayésien)`;
             document.getElementById("next-button").style.display = "none";
         }
     }
