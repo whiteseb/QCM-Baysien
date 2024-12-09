@@ -34,20 +34,31 @@ function shuffleQuestions() {
 // Fonction pour afficher l'énoncé de la question
 function displayQuestionText(question) {
     const questionElement = document.getElementById("question");
-    questionElement.textContent = question.question;
+    if (questionElement) {
+        questionElement.textContent = question.question;
+    }
 }
 
 // Fonction pour masquer tous les blocs (barème classique et bayésien)
 function hideAllBlocks() {
     for (let i = 1; i <= questions.length; i++) {
-        document.getElementById(`question${i}-baremeclassique`).style.display = "none";
-        document.getElementById(`question${i}-baremebaysien`).style.display = "none";
+        const barèmeClassique = document.getElementById(`question${i}-baremeclassique`);
+        const barèmeBaysien = document.getElementById(`question${i}-baremebaysien`);
+
+        if (barèmeClassique) {
+            barèmeClassique.style.display = "none";
+        }
+        if (barèmeBaysien) {
+            barèmeBaysien.style.display = "none";
+        }
     }
 }
 
 // Fonction pour afficher le barème classique
 function displayBarèmeClassique(question) {
     const optionsContainer = document.getElementById(`options-container${currentQuestionIndex + 1}`);
+    if (!optionsContainer) return;
+
     optionsContainer.innerHTML = "";  // Réinitialiser les options
 
     // Affichage de l'énoncé de la question
@@ -68,13 +79,23 @@ function displayBarèmeClassique(question) {
     });
 
     // Montrer le conteneur pour le barème classique
-    document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`).style.display = "block";
-    document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`).style.display = "none";
+    const barèmeClassique = document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`);
+    if (barèmeClassique) {
+        barèmeClassique.style.display = "block";
+    }
+
+    // Cacher le barème bayésien
+    const barèmeBaysien = document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`);
+    if (barèmeBaysien) {
+        barèmeBaysien.style.display = "none";
+    }
 }
 
 // Fonction pour afficher le barème bayésien
 function displayBarèmeBayésien(question) {
     const percentagesContainer = document.getElementById(`percentages-container${currentQuestionIndex + 1}`);
+    if (!percentagesContainer) return;
+
     percentagesContainer.innerHTML = "<label>Entrez les pourcentages pour chaque option (total = 100) :</label><br>";
 
     // Affichage de l'énoncé de la question
@@ -109,8 +130,15 @@ function displayBarèmeBayésien(question) {
     });
 
     // Montrer le conteneur pour le barème bayésien
-    document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`).style.display = "none";
-    document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`).style.display = "block";
+    const barèmeClassique = document.getElementById(`question${currentQuestionIndex + 1}-baremeclassique`);
+    if (barèmeClassique) {
+        barèmeClassique.style.display = "none";
+    }
+
+    const barèmeBaysien = document.getElementById(`question${currentQuestionIndex + 1}-baremebaysien`);
+    if (barèmeBaysien) {
+        barèmeBaysien.style.display = "block";
+    }
 }
 
 // Fonction pour vérifier la réponse donnée par l'utilisateur pour le barème classique
