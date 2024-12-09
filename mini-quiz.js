@@ -154,17 +154,19 @@ function nextQuestion() {
             currentBarèmeType = 0;  // Revenir au barème classique pour la prochaine question
             displayQuestionBarèmeClassique(questions[currentQuestionIndex], currentQuestionIndex + 1);
         } else {
-            const result = document.getElementById("result");
-            result.textContent = `Votre score Barème 1 : ${totalScoreBarème1} / ${questions.length}\n` +
-                                 `Votre score Barème 2 : ${totalScoreBarème2} / ${questions.length}`;
+            document.getElementById("result").textContent = `Quiz terminé ! Votre score est : ${totalScoreBarème1 + totalScoreBarème2}`;
+            document.getElementById("next-button").style.display = "none";
         }
     }
-
-    document.getElementById("next-button").style.display = "none";  // Masquer le bouton après chaque réponse
 }
 
+// Initialisation du quiz
+function startQuiz() {
+    displayQuestionBarèmeClassique(questions[currentQuestionIndex], currentQuestionIndex + 1);
+}
+
+// Attacher l'événement au bouton "question suivante"
 document.getElementById("next-button").addEventListener("click", nextQuestion);
 
-// Démarrer le quiz avec la première question
-displayQuestionBarèmeClassique(questions[currentQuestionIndex], 1);
-
+// Démarrer le quiz à l'ouverture de la page
+startQuiz();
