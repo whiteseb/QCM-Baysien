@@ -83,7 +83,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
         input.type = "number";
         input.min = 0;
         input.max = 100;
-        input.name = "percentages";
+        input.name = `percentages-${questionIndex}`;  // Ajouter l'index de la question pour que chaque question ait ses propres champs
         input.placeholder = `Pourcentage pour ${option}`;
         input.setAttribute("data-index", index);
 
@@ -100,7 +100,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
         percentagesContainer.appendChild(document.createElement("br"));
     });
 
-    // Réinitialisation des champs de pourcentage
+    // Réinitialisation des champs de pourcentage pour cette question uniquement
     const inputs = percentagesContainer.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
         input.value = "";  // Réinitialisation des valeurs
@@ -126,7 +126,7 @@ function checkBarèmeClassique(question, questionIndex) {
 
 // Fonction pour vérifier la réponse donnée par l'utilisateur pour le barème bayésien
 function checkBarèmeBayésien(question, questionIndex) {
-    const percentageInputs = document.querySelectorAll(`input[name="percentages"]`);
+    const percentageInputs = document.querySelectorAll(`input[name="percentages-${questionIndex}"]`);  // Sélectionner uniquement les champs de pourcentage de la question actuelle
     let totalPercentage = 0;
 
     percentageInputs.forEach(input => {
@@ -185,3 +185,4 @@ document.getElementById("next-button").addEventListener("click", nextQuestion);
 
 // Démarrer le quiz à l'ouverture de la page
 startQuiz();
+
