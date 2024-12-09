@@ -167,3 +167,4 @@ document.getElementById("next-button").addEventListener("click", nextQuestion);
 
 // Démarrer le quiz avec la première question
 displayQuestionBarèmeClassique(questions[currentQuestionIndex], 1);
+
