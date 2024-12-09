@@ -86,6 +86,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
         input.name = `percentages-${questionIndex}`;
         input.placeholder = `Pourcentage pour ${option}`;
         input.setAttribute("data-index", index);
+        input.value = 0;  // Initialisation de la valeur par défaut à 0
 
         percentagesContainer.appendChild(input);
 
@@ -103,7 +104,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
     // Réinitialisation des champs de pourcentage
     const inputs = percentagesContainer.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
-        input.value = "";  // Réinitialisation des valeurs
+        input.value = 0;  // Réinitialisation des valeurs à 0
     });
 
     document.getElementById(`question${questionIndex}-baremebaysien`).style.display = "block";
@@ -130,16 +131,24 @@ function checkBarèmeBayésien(question, questionIndex) {
     let totalPercentage = 0;
     let score = 0;
 
+    // Validation de chaque entrée et calcul de la somme des pourcentages
     percentageInputs.forEach(input => {
         const percentageValue = parseFloat(input.value);
-        if (!isNaN(percentageValue)) {
+        if (!isNaN(percentageValue) && percentageValue >= 0 && percentageValue <= 100) {
             totalPercentage += percentageValue;
+        } else {
+            score = NaN;  // Si une entrée est invalide, nous marquons le score comme NaN
         }
     });
 
+    // Vérification que la somme des pourcentages est exactement 100
     if (totalPercentage !== 100) {
         alert("Les pourcentages doivent être égaux à 100.");
         return false;
+    }
+
+    if (isNaN(score)) {
+        return false;  // Si score est NaN, nous évitons de continuer
     }
 
     // Calcul du score basé sur la somme des carrés des erreurs
