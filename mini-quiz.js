@@ -86,7 +86,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
         input.name = `percentages-${questionIndex}`;
         input.placeholder = `Pourcentage pour ${option}`;
         input.setAttribute("data-index", index);
-        input.value = 0;  // Initialisation de la valeur par défaut à 0
+        input.value = 0;  // Valeur par défaut à 0
 
         percentagesContainer.appendChild(input);
 
@@ -104,7 +104,7 @@ function displayQuestionBarèmeBayésien(question, questionIndex) {
     // Réinitialisation des champs de pourcentage
     const inputs = percentagesContainer.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
-        input.value = 0;  // Réinitialisation des valeurs à 0
+        input.value = "0";  // Valeur par défaut à 0
     });
 
     document.getElementById(`question${questionIndex}-baremebaysien`).style.display = "block";
@@ -129,7 +129,7 @@ function checkBarèmeClassique(question, questionIndex) {
 function checkBarèmeBayésien(question, questionIndex) {
     const percentageInputs = document.querySelectorAll(`input[name="percentages-${questionIndex}"]`);
     let totalPercentage = 0;
-    let score = 0;
+    let squaredErrorSum = 0;
 
     // Validation de chaque entrée et calcul de la somme des pourcentages
     percentageInputs.forEach(input => {
@@ -137,7 +137,8 @@ function checkBarèmeBayésien(question, questionIndex) {
         if (!isNaN(percentageValue) && percentageValue >= 0 && percentageValue <= 100) {
             totalPercentage += percentageValue;
         } else {
-            score = NaN;  // Si une entrée est invalide, nous marquons le score comme NaN
+            alert("Les pourcentages doivent être entre 0 et 100.");
+            return false;
         }
     });
 
@@ -147,22 +148,20 @@ function checkBarèmeBayésien(question, questionIndex) {
         return false;
     }
 
-    if (isNaN(score)) {
-        return false;  // Si score est NaN, nous évitons de continuer
-    }
-
     // Calcul du score basé sur la somme des carrés des erreurs
     percentageInputs.forEach(input => {
         const percentageValue = parseFloat(input.value);
         const optionIndex = input.getAttribute("data-index");
+
+        // Calcul de l'erreur pour chaque option
         const error = percentageValue - question.correctAnswerBarème2[optionIndex];
-        score += error * error;  // Carré de l'erreur
+        squaredErrorSum += error * error;  // Carré de l'erreur
     });
 
-    // Calcul du score final pour cette question : 1 - somme des carrés des erreurs
-    score = 1 - score;
-    if (score < 0) score = 0;  // Le score ne peut pas être inférieur à 0
+    // Calcul du score : 1 - somme des carrés des erreurs
+    const score = 1 - squaredErrorSum;
 
+    // Ajout du score bayésien à la variable globale
     totalScoreBarème2 += score;
     return true;
 }
@@ -183,7 +182,7 @@ function nextQuestion() {
             currentBarèmeType = 0;  // Revenir au barème classique pour la prochaine question
             displayQuestionBarèmeClassique(questions[currentQuestionIndex], currentQuestionIndex + 1);
         } else {
-            document.getElementById("result").textContent = `Quiz terminé ! Votre score est : ${totalScoreBarème1} (barème classique) + ${totalScoreBarème2.toFixed(2)} (barème bayésien)`;
+            document.getElementById("result").textContent = `Quiz terminé ! Votre score est : ${totalScoreBarème1 + totalScoreBarème2}`;
             document.getElementById("next-button").style.display = "none";
         }
     }
@@ -197,6 +196,10 @@ function startQuiz() {
 
 // Attacher l'événement au bouton "question suivante"
 document.getElementById("next-button").addEventListener("click", nextQuestion);
+
+// Démarrer le quiz lorsque le document est prêt
+window.onload = startQuiz;
+
 
 // Démarrer le quiz à l'ouverture de la page
 startQuiz();
