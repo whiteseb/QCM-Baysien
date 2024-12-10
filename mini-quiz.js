@@ -10,19 +10,19 @@ const questions = [
         question: "Quelle est la couleur du ciel ?",
         options: ["Bleu", "Vert", "Rouge", "Jaune"],
         correctAnswerBarème1: "Bleu",
-        correctAnswerBarème2: [100, 0, 0, 0]  // "Bleu" = 100% et les autres = 0%
+        correctAnswerBarème2: [1, 0, 0, 0]  // "Bleu" = 100% et les autres = 0%
     },
     {
         question: "Quel est l'animal roi de la savane ?",
         options: ["Lion", "Éléphant", "Tigre", "Zèbre"],
         correctAnswerBarème1: "Lion",
-        correctAnswerBarème2: [100, 0, 0, 0]  // "Lion" = 100% et les autres = 0%
+        correctAnswerBarème2: [1, 0, 0, 0]  // "Lion" = 100% et les autres = 0%
     },
     {
         question: "Combien de continents y a-t-il ?",
         options: ["5", "6", "7", "8"],
         correctAnswerBarème1: "7",
-        correctAnswerBarème2: [0, 0, 100, 0]  // "7" = 100% et les autres = 0%
+        correctAnswerBarème2: [0, 0, 1, 0]  // "7" = 100% et les autres = 0%
     }
 ];
 
@@ -154,7 +154,7 @@ function checkBarèmeBayésien(question, questionIndex) {
         const optionIndex = input.getAttribute("data-index");
 
         // Calcul de l'erreur pour chaque option
-        const error = percentageValue - question.correctAnswerBarème2[optionIndex];
+        const error = percentageValue / 100 - question.correctAnswerBarème2[optionIndex]; // Corriger l'erreur : diviser par 100
         squaredErrorSum += error * error;  // Carré de l'erreur
     });
 
@@ -182,12 +182,8 @@ function nextQuestion() {
             currentBarèmeType = 0;  // Revenir au barème classique pour la prochaine question
             displayQuestionBarèmeClassique(questions[currentQuestionIndex], currentQuestionIndex + 1);
         } else {
-            // Affichage des scores séparés pour les deux barèmes
-            document.getElementById("result").innerHTML = `
-                <p>Quiz terminé !</p>
-                <p>Score (Barème classique) : ${totalScoreBarème1}</p>
-                <p>Score (Barème bayésien) : ${totalScoreBarème2.toFixed(2)}</p>
-            `;
+            // Affichage du résultat
+            document.getElementById("result").textContent = `Quiz terminé ! Score barème classique : ${totalScoreBarème1} / ${questions.length}, Score barème bayésien : ${totalScoreBarème2.toFixed(2)}`;
             document.getElementById("next-button").style.display = "none";
         }
     }
