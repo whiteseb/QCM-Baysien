@@ -182,7 +182,12 @@ function nextQuestion() {
             currentBarèmeType = 0;  // Revenir au barème classique pour la prochaine question
             displayQuestionBarèmeClassique(questions[currentQuestionIndex], currentQuestionIndex + 1);
         } else {
-            document.getElementById("result").textContent = `Quiz terminé ! Votre score est : ${totalScoreBarème1 + totalScoreBarème2}`;
+            // Affichage des scores séparés pour les deux barèmes
+            document.getElementById("result").innerHTML = `
+                <p>Quiz terminé !</p>
+                <p>Score (Barème classique) : ${totalScoreBarème1}</p>
+                <p>Score (Barème bayésien) : ${totalScoreBarème2.toFixed(2)}</p>
+            `;
             document.getElementById("next-button").style.display = "none";
         }
     }
@@ -197,10 +202,5 @@ function startQuiz() {
 // Attacher l'événement au bouton "question suivante"
 document.getElementById("next-button").addEventListener("click", nextQuestion);
 
-// Démarrer le quiz lorsque le document est prêt
-window.onload = startQuiz;
-
-
 // Démarrer le quiz à l'ouverture de la page
 startQuiz();
-
